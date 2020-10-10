@@ -1,16 +1,19 @@
 const express = require('express');
 const morgan = require('morgan');
-const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
+// Import Routes
+const postsRoutes = require('./routes/posts')
+
 // Load env
-dotenv.config({ path: "./config.env" });
+// dotenv.config({ path: "./config.env" });
+require('dotenv/config');
 
 const app = express();
 
 // Connect to DB
 mongoose.connect(
-    "mongodb+srv://nemo:iQWoQmaawImqiYH3@cluster0.p34fz.mongodb.net/rest_api_deved?retryWrites=true&w=majority",
+    process.env.MONGO_DB_URI,
     { 
         useUnifiedTopology: true,
         useNewUrlParser: true
@@ -25,13 +28,14 @@ if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 
+app.use('/posts', postsRoutes);
+
 app.get('/', (req, res) => {
     res.send('We are on home');
 });
 
-app.get('/posts', (req, res) => {
-    res.send('We are on posts');
-});
+
+
 
 
 const PORT = process.env.PORT || 5000;
