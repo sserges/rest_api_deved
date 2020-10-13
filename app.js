@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 // Import Routes
 const postsRoutes = require('./routes/posts')
@@ -10,6 +11,8 @@ const postsRoutes = require('./routes/posts')
 require('dotenv/config');
 
 const app = express();
+app.use(bodyParser.json());
+// app.use(express.json());
 
 // Connect to DB
 mongoose.connect(
